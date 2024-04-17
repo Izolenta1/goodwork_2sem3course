@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clientDev": "cd frontend && npm run dev",
+    "serverDev": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run clientDev\" \"npm run serverDev\"",
+    "client": "cd frontend && npm run start",
+    "server": "cd backend && npm run start",
+    "start": "concurrently \"npm run client\" \"npm run server\""
   },
   "author": "",
   "license": "ISC",
