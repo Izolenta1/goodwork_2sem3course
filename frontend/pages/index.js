@@ -1,5 +1,6 @@
 import Head from "next/head";
 import MainContainer from "@/components/MainComponent";
+import VacancySearchInput from "@/components/GeneralComponents/VacancySearchInput";
 
 export default function Index() {
     return (
@@ -10,12 +11,17 @@ export default function Index() {
             <MainContainer>
                 <main className="grow flex flex-col items-center">
                     {/* Враппер под 1140px для страницы корзины */}
-                    <div className="w-[1140px]  h-fit flex flex-col gap-[32px] max920px:gap-[16px]">
+                    <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
                             <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Good work</span>
                             <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                        </div>
+
+                        <div className="flex flex-col gap-[16px] items-center justify-center h-[600px] relative bg-[url('/index/index_banner.jpg')] bg-cover">
+                            <span className="text-[40px] leading-[40px] font-mulish font-[700] text-[#FFFFFF]">Работа найдется каждому!</span>
+                            <VacancySearchInput />
                         </div>
 
                         <span className="text-[24px] leading-[42px] font-[600] font-mulish text-[#000000]">
@@ -25,7 +31,6 @@ export default function Index() {
                             <br></br><br></br>
                             Добро пожаловать на "Good Work" - ваше надежное онлайн-решение для поиска работы! Мы понимаем, как важно найти не просто работу, а именно ту, которая будет соответствовать вашим навыкам, интересам и карьерным целям.
                         </span>
-
                     </div>
                 </main>
             </MainContainer>

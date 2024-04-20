@@ -1,16 +1,17 @@
-/**
- * @namespace backend.app
- * @memberOf backend
- * @description
- * Модуль, содержащий методы для запуска сервера приложения
- */
-
 import express from "express";
+import cookieParser from "cookie-parser";
+
+import auth_routes from "./routes/auth_routes.js"
 
 /**
  * Переменная, содержащая объект сервера
  */
 const app = express();
+
+app.use(express.json());
+app.use(cookieParser())
+
+app.use(auth_routes)
 
 /**
  * Номер порта

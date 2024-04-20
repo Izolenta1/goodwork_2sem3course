@@ -2,7 +2,7 @@ import VacancySearchInput from "@/components/GeneralComponents/VacancySearchInpu
 
 export default function Footer() {
     return (
-        <footer className="w-full h-fit flex justify-center bg-[#313131] py-[24px]">
+        <footer className="w-full h-fit flex justify-center bg-[#313131] py-[24px] mt-[16px]">
 
             {/* Враппер для основного содержимого под 1140px */}
             <div className="w-[1140px] flex flex-row justify-between items-center">
