@@ -1,9 +1,40 @@
 import { useRef, useState } from "react"
 import useClickOutside from "@/hooks/useClickOutside"
 import styles from "@/styles/Header/Modals.module.css"
+import { useRouter } from "next/navigation"
 
 export default function LoginModal({ activeModal, setActiveModal }) {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
+    const [loginError, setLoginError] = useState("")
+
+    const router = useRouter();
+    function sendLoginForm() {
+        const form = {
+            username: username,
+            password: password,
+        }
+
+        // Выполнение запроса
+        let url = `/auth/login`
+        fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(form)
+        })
+        .then(response_data => response_data.json())
+        .then(response_data => {
+            if (response_data.status != 200) {
+                setLoginError(response_data.payload)
+            }
+            else {
+                router.refresh()
+            }
+        })
+    }
     
 
     // Хук для отслеживания клика вне модального окна
@@ -40,19 +71,22 @@ export default function LoginModal({ activeModal, setActiveModal }) {
                     {/* Поле логина */}
                     <div className="flex flex-col w-[320px] gap-[8px]">
                         <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Логин <span className="text-[#FF5C35]">*</span></span>
-                        <input className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш логин"></input>
+                        <input value={username} onChange={(e) => setUsername(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш логин"></input>
                     </div>
 
                     {/* Поле пароля */}
                     <div className="flex flex-col w-[320px] gap-[8px]">
                         <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Пароль <span className="text-[#FF5C35]">*</span></span>
-                        <input type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш пароль"></input>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш пароль"></input>
                     </div>
+
+                    {/* Текст ошибки */}
+                    <span className="text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]">{loginError}</span>
                 </div>
 
                 <span className="text-[16px] leading-[16px] font-[400] font-mulish text-[#000000] select-none">Нет аккаунта? <button onClick={() => setActiveModal("Register")} className="text-[#FF6F0E]">Зарегистрироваться</button></span>
 
-                <button className="w-[195px] h-[45px] bg-[#FF6F0E] rounded-[6px] flex justify-center items-center text-[18px] leading-[18px] font-[700] font-mulish text-[#FFFFFF]">Войти</button>
+                <button onClick={() => sendLoginForm()} className="w-[195px] h-[45px] bg-[#FF6F0E] rounded-[6px] flex justify-center items-center text-[18px] leading-[18px] font-[700] font-mulish text-[#FFFFFF]">Войти</button>
             </div>
         </div>
     )

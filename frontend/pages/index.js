@@ -10,7 +10,8 @@ export default function Index() {
             </Head>
             <MainContainer>
                 <main className="grow flex flex-col items-center">
-                    {/* Враппер под 1140px для страницы корзины */}
+
+                    {/* Враппер под 1140px для главной */}
                     <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
 
                         {/* Заголовок */}

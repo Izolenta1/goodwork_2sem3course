@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import useClickOutside from "@/hooks/useClickOutside"
 import styles from "@/styles/Header/Modals.module.css"
+import { useRouter } from "next/navigation"
 
 export default function RegisterModal({ activeModal, setActiveModal }) {
     const [username, setUsername] = useState("")
@@ -10,11 +11,8 @@ export default function RegisterModal({ activeModal, setActiveModal }) {
 
     const [regError, setRegError] = useState("")
 
+    const router = useRouter();
     function sendRegForm() {
-        if (regError != "") {
-            return
-        }
-
         const form = {
             username: username,
             password: password,
@@ -31,8 +29,15 @@ export default function RegisterModal({ activeModal, setActiveModal }) {
             },
             body: JSON.stringify(form)
         })
-        .then(response_data => response_data.json())
-        .then(console.log(response_data))
+            .then(response_data => response_data.json())
+            .then(response_data => {
+                if (response_data.status != 200) {
+                    setRegError(response_data.payload)
+                }
+                else {
+                    router.refresh()
+                }
+            })
     }
 
     // Хук для отслеживания клика вне модального окна
@@ -89,6 +94,9 @@ export default function RegisterModal({ activeModal, setActiveModal }) {
 
                     <input onChange={() => setRole("employer")} type="radio" id="employer" className={styles.orangeCheckbox} name="who"></input>
                     <label htmlFor="employer" className="text-[16px] leading-[16px] font-[400] font-mulish text-[#000000] select-none">Я работодатель</label>
+
+                    {/* Текст ошибки */}
+                    <span className="text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]">{regError}</span>
                 </div>
 
                 <span className="text-[16px] leading-[16px] font-[400] font-mulish text-[#000000] select-none">Есть аккаунт? <button onClick={() => setActiveModal("Login")} className="text-[#FF6F0E]">Войти</button></span>

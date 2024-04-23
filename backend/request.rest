@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/resume
+Content-Type: application/json
+
+{
+    "email": "asfadg@yandex.ru",
+    "description": "password"
+}

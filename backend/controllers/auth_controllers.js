@@ -5,54 +5,46 @@ import { dataBaseCheckExisting } from "./general_controller.js";
 import pool from "./database_controller.js";
 
 export async function login(req, res) {
-    if (req.body.login.length == 0) {
-        return res.status(200).json({status: 411, payload: "Login length must be more than 0"})
+    if (req.body.username.length == 0) {
+        return res.status(200).json({status: 411, payload: "Длина логина должна быть больше 0"})
     }
 
     if (req.body.password.length == 0) {
-        return res.status(200).json({status: 411, payload: "Password length must be more than 0"})
+        return res.status(200).json({status: 411, payload: "Длина пароля должна быть больше 0"})
     }
 
-    let checkLoginNVRes
-    await dataBaseCheckExisting("usersnv", "login", req.body.login).then(function(result) {
-        checkLoginNVRes = result[0][0]
+    let checkUsernameRes
+    await dataBaseCheckExisting("users", "username", req.body.username).then(function(result) {
+        checkUsernameRes = result[0][0]
     })
-    if (checkLoginNVRes != null) {
-        return res.status(200).json({status: 409, payload: "Login exist in not verified"})
+    if (checkUsernameRes == null) {
+        return res.status(200).json({status: 409, payload: "Неправильный логин или пароль"})
     }
 
-    let checkLoginRes
-    await dataBaseCheckExisting("users", "login", req.body.login).then(function(result) {
-        checkLoginRes = result[0][0]
-    })
-    if (checkLoginRes == null) {
-        return res.status(200).json({status: 409, payload: "Login does not exist"})
-    }
-
-    const hashedpassDBraw = await pool.execute(`SELECT hashedpass FROM users WHERE login = ${pool.escape(req.body.login)}`)
-    const hashedpassDB = hashedpassDBraw[0][0].hashedpass
+    const hashedpassDBraw = await pool.execute(`SELECT password FROM users WHERE username = ${pool.escape(req.body.username)}`)
+    const hashedpassDB = hashedpassDBraw[0][0].password
 
     try {
         if (await bcrypt.compare(req.body.password, hashedpassDB)) {
-            let user_data = (await pool.execute(`SELECT id from users WHERE login = ${pool.escape(req.body.login)}`))[0][0]
-            let user_id = user_data.id
+            let user_data = (await pool.execute(`SELECT user_id from users WHERE username = ${pool.escape(req.body.username)}`))[0][0]
+            let user_id = user_data.user_id
             let session_id = uuidv4()
-            pool.execute(`INSERT INTO sessions SET id = ${pool.escape(session_id)}, user_id = ${pool.escape(user_id)}`)
+            pool.execute(`INSERT INTO sessions SET uuid = ${pool.escape(session_id)}, user_id = ${pool.escape(user_id)}`)
             
-            res.cookie("mna_session", session_id, {
+            res.cookie("goodwork_session", session_id, {
                 httpOnly: true,
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 259200
             })
-            return res.status(200).json({status: 200, payload: {id: user_id, login: user_data.login, role: user_data.roleonsite}})
+            return res.status(200).json({status: 200, payload: {user_id: user_id, username: user_data.username, role: user_data.role}})
         }
         else {
-            return res.status(200).json({status: 401, payload: "Wrong password"})
+            return res.status(200).json({status: 401, payload: "Неправильный логин или пароль"})
         }
     }
     catch (e) {
-        logger.fatal(e, true)
-        return res.status(200).json({status: 500, payload: "Server error"})
+        console.log(e)
+        return res.status(200).json({status: 500, payload: "Ошибка сервера"})
     }
 }
 
@@ -68,53 +60,51 @@ export async function register(req, res) {
     if (regCheckUsername(req.body.username) != "") {
         return res.status(200).json({status: 409, payload: regCheckUsername(req.body.username)})
     }
+    if (req.body.password != req.body.repeated) {
+        return res.status(200).json({status: 409, payload: "Пароли не совпадают"})
+    }
     if (regCheckPassword(req.body.password) != "") {
         return res.status(200).json({status: 409, payload: regCheckPassword(req.body.password)})
     }
-    if (regCheckPassword(req.body.passwordRepeat) != "") {
-        return res.status(200).json({status: 409, payload: regCheckPassword(req.body.passwordRepeat)})
+    if (regCheckPassword(req.body.repeated) != "") {
+        return res.status(200).json({status: 409, payload: regCheckPassword(req.body.repeated)})
     }
-    if (req.body.role != "employee" || req.body.role != "employer") {
+    if (req.body.role != "employee" && req.body.role != "employer") {
         return res.status(200).json({status: 409, payload: "Не выбрана роль"})
-    }
-    if (req.body.password != req.body.passwordRepeat) {
-        return res.status(200).json({status: 409, payload: "Пароли не совпадают"})
     }
 
     try {
         const hashedpass = await bcrypt.hash(req.body.password, 10)
-        pool.execute(`INSERT INTO users (username, password, role) VALUES (${pool.escape(req.body.username)}, ${pool.escape(hashedpass)}, ${pool.escape(req.body.role)});`)
+        let insertID = (await pool.execute(`INSERT INTO users (username, password, role) VALUES (${pool.escape(req.body.username)}, ${pool.escape(hashedpass)}, ${pool.escape(req.body.role)});`))[0].insertId
 
-        // let user_data = (await pool.execute(`SELECT id from users WHERE login = ${pool.escape(req.body.login)}`))[0][0]
-        // let user_id = user_data.id
-        // let session_id = uuidv4()
-        // pool.execute(`INSERT INTO sessions SET id = ${pool.escape(session_id)}, user_id = ${pool.escape(user_id)}`)
+        let session_id = uuidv4()
+        pool.execute(`INSERT INTO sessions SET uuid = ${pool.escape(session_id)}, user_id = ${pool.escape(insertID)}`)
 
-        // res.cookie("goodwork_session", session_id, {
-        //     httpOnly: true,
-        //     sameSite: "strict",
-        //     maxAge: 1000 * 60 * 259200
-        // })
+        res.cookie("goodwork_session", session_id, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 259200
+        })
         return res.status(200).json({status: 200, payload: "Аккаунт успешно создан"})
     }
-    catch {
+    catch (e) {
+        console.log(e)
         return res.status(200).json({status: 500, payload: "Ошибка сервера"})
     }
 }
 
 export async function verifySession(req, res) {
-    pool.execute(`UPDATE sessions SET created_at = CURRENT_TIMESTAMP() WHERE id = ${pool.escape(req.session_id)}`)
     let payload = {
-        id: req.tokenData.id,
-        user: req.tokenData.user,
-        role: req.tokenData.role
+        user_id: req.session_data.user_id,
+        username: req.session_data.username,
+        role: req.session_data.role
     }
     return res.status(200).json({status: 200, payload: payload})
 }
 
 export function logout(req, res) {
-    pool.execute(`DELETE FROM sessions WHERE id = ${pool.escape(req.session_id)}`)
-    res.clearCookie("mna_session")
+    pool.execute(`DELETE FROM sessions WHERE uuid = ${pool.escape(req.session_id)}`)
+    res.clearCookie("goodwork_session")
     return res.status(200).json({status: 200, payload: "Session deleted"})
 }
 
@@ -142,5 +132,13 @@ function regCheckPassword(password) {
     if (!(password.length > 6)) {
         return "Длина пароля должна быть больше 6 символов"
     }
+    if (password.length > 64) {
+        return "Длина пароля не должна быть больше 64 символов"
+    }
     return ""
+}
+
+export async function getSessionInfo(session_id) {
+    let user_data = (await pool.execute(`SELECT sessions.*, users.username, users.role FROM sessions JOIN users ON sessions.user_id = users.user_id WHERE sessions.uuid = ${pool.escape(session_id)}`))[0][0]
+    return user_data
 }
