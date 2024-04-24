@@ -2,7 +2,7 @@ import Eye from "@/svgs/Eye";
 import Edit from "@/svgs/Edit";
 import Trash from "@/svgs/Trash";
 
-export default function VacancyCell(vacancy_id, title, salary, exp, description) {
+export default function VacancyCell({ vacancy_id, title, salary, exp, description }) {
     return (
         <div className="flex gap-[12px] w-full h-[300px] p-[12px] border-l-[6px] border-l-[#FF6F0E] rounded-[6px] hover:bg-[#ffebde] transition ease-in-out duration-300">
             <div className="flex flex-col gap-[12px]">

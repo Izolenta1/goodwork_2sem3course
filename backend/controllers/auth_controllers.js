@@ -4,6 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { dataBaseCheckExisting } from "./general_controller.js";
 import pool from "./database_controller.js";
 
+/**
+ * @description Функция для логина пользователя
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export async function login(req, res) {
     if (req.body.username.length == 0) {
         return res.status(200).json({status: 411, payload: "Длина логина должна быть больше 0"})
@@ -48,6 +53,11 @@ export async function login(req, res) {
     }
 }
 
+/**
+ * @description Функция для регистрации пользователя
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export async function register(req, res) {
     let checkUsernameRes
     await dataBaseCheckExisting("users", "username", req.body.username).then(function(result) {
@@ -93,6 +103,11 @@ export async function register(req, res) {
     }
 }
 
+/**
+ * @description Функция для верификации сессии
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export async function verifySession(req, res) {
     let payload = {
         user_id: req.session_data.user_id,
@@ -102,6 +117,11 @@ export async function verifySession(req, res) {
     return res.status(200).json({status: 200, payload: payload})
 }
 
+/**
+ * @description Функция для выхода из аккаунт (удаление сессии из куки)
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export function logout(req, res) {
     pool.execute(`DELETE FROM sessions WHERE uuid = ${pool.escape(req.session_id)}`)
     res.clearCookie("goodwork_session")
@@ -113,7 +133,10 @@ export function logout(req, res) {
 
 
 
-
+/**
+ * @description Функция для проверки логина пользователя
+ * @param {string} username - Строка пользователя
+ */
 function regCheckUsername(username) {
     let usernameRegex = /^[a-zA-Z][a-zA-Z0-9-_]+$/;
     if (!usernameRegex.test(username)) {
@@ -128,6 +151,10 @@ function regCheckUsername(username) {
     return ""
 }
 
+/**
+ * @description Функция для проверки пароля
+ * @param {string} password - Строка пароля
+ */
 function regCheckPassword(password) {
     if (!(password.length > 6)) {
         return "Длина пароля должна быть больше 6 символов"
@@ -138,6 +165,10 @@ function regCheckPassword(password) {
     return ""
 }
 
+/**
+ * @description Функция для получения информации по id сессии. Экспортируется в middleware
+ * @param {string} session_id - Строка сессии
+ */
 export async function getSessionInfo(session_id) {
     let user_data = (await pool.execute(`SELECT sessions.*, users.username, users.role FROM sessions JOIN users ON sessions.user_id = users.user_id WHERE sessions.uuid = ${pool.escape(session_id)}`))[0][0]
     return user_data

@@ -1,10 +1,20 @@
 import pool from "./database_controller.js";
 
+/**
+ * @description Функция для получения резюме пользователя
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export async function getUserResume(req, res) {
     let user_resume = (await pool.execute(`SELECT * from resumes WHERE user_id = ${pool.escape(req.session_data.user_id)}`))[0][0]
     return res.status(200).json({status: 200, payload: user_resume})
 }
 
+/**
+ * @description Функция для сохранения резюме пользователя
+ * @param {object} req - Объект запроса
+ * @param {object} res - Объекта ответа
+ */
 export async function saveUserResume(req, res) {
     if (req.body.email.length == 0) {
         return res.status(200).json({status: 411, payload: "Длина почты должна быть больше 0"})
@@ -37,7 +47,10 @@ export async function saveUserResume(req, res) {
 
 
 
-
+/**
+ * @description Функция для проверки почты
+ * @param {string} email - Строка почты
+ */
 function regCheckEmail(email) {
     let emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
     if (!emailRegex.test(email)) {

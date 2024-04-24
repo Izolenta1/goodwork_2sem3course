@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
+import VacancyCell from "@/components/Cabinet/VacancyCell";
 
 export default function EmployerWrapper() {
     const [vacancies, setVacancies] = useState([])
@@ -29,7 +29,7 @@ export default function EmployerWrapper() {
 
                 {/* Враппер вакансий */}
                 <div className="flex flex-col gap-[16px]">
-                    {vacancies.map(vacancy => {})}
+                    {vacancies.map(vacancy => <VacancyCell key={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.exp} description={vacancy.description} />)}
                 </div>
             </div>
         </main>
