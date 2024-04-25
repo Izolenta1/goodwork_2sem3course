@@ -29,7 +29,7 @@ export default function EmployerWrapper() {
 
                 {/* Враппер вакансий */}
                 <div className="flex flex-col gap-[16px]">
-                    {vacancies.map(vacancy => <VacancyCell key={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.exp} description={vacancy.description} />)}
+                    {vacancies.map(vacancy => <VacancyCell key={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)}
                 </div>
             </div>
         </main>
