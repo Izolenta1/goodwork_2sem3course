@@ -6,10 +6,19 @@ export default function New() {
     const [title, setTitle] = useState("")
     const [salary, setSalary] = useState("")
     const [exp, setExp] = useState("")
+    const [description, setDescription] = useState("")
     const descriptionRef = useRef(null)
 
     const [saveInfo, setSaveInfo] = useState("")
     const [isError, setError] = useState(false)
+
+    function handleDescriptonChange(e) {
+        setDescription(e.target.value)
+        if (descriptionRef.current) {
+            descriptionRef.current.style.height = 'auto';
+            descriptionRef.current.style.height = descriptionRef.current.scrollHeight + 'px';
+        }
+    }
 
     const [isAdded, setAdded] = useState(false)
     function sendVacancyForm() {
@@ -17,7 +26,7 @@ export default function New() {
             title: title,
             salary: salary,
             exp: exp,
-            description: descriptionRef.current.innerText,
+            description: description,
         }
 
         // Выполнение запроса
@@ -46,7 +55,7 @@ export default function New() {
     return (
         <>
             <Head>
-                <title>Главная</title>
+                <title>Добавить вакансию</title>
             </Head>
             <MainContainer>
                 <main className="grow flex flex-col items-center">
@@ -63,25 +72,25 @@ export default function New() {
                         {/* Поле заголовка */}
                         <div className="flex flex-col gap-[8px]">
                             <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Заголовок вакансии <span className="text-[#FF5C35]">*</span></span>
-                            <input value={title} onChange={(e) => setTitle(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Python разработчик"></input>
+                            <input value={title} onChange={(e) => setTitle(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Python разработчик"></input>
                         </div>
 
                         {/* Поле зарплаты */}
                         <div className="flex flex-col gap-[8px]">
                             <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Предлагаемая зарплата <span className="text-[#FF5C35]">*</span></span>
-                            <input value={salary} onChange={(e) => setSalary(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="250000"></input>
+                            <input value={salary} onChange={(e) => setSalary(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="250000"></input>
                         </div>
 
                         {/* Поле опыта */}
                         <div className="flex flex-col gap-[8px]">
                             <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Необходимый опыт работы <span className="text-[#FF5C35]">*</span></span>
-                            <input value={exp} onChange={(e) => setExp(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="6"></input>
+                            <input value={exp} onChange={(e) => setExp(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="6"></input>
                         </div>
 
                         {/* Поле для вакансии */}
                         <div className="flex flex-col gap-[8px]">
                             <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Текст вакансии <span className="text-[#FF5C35]">*</span></span>
-                            <div ref={descriptionRef} className="relative w-full min-h-[600px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" contentEditable></div>
+                            <textarea ref={descriptionRef} value={description} onChange={handleDescriptonChange} className="relative w-full min-h-[600px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 resize-none" placeholder="Текст вакансии"></textarea>
                         </div>
 
                         {/* Текст ошибки */}
@@ -95,4 +104,39 @@ export default function New() {
             </MainContainer>
         </>
     );
+}
+
+export async function getServerSideProps(context) {
+    let verifyURL = `http://localhost:3001/auth/verifySession`
+    const verifyRes = await fetch(verifyURL, {
+        method: "POST",
+        headers: {
+            cookie: context.req.headers.cookie
+        }
+    })
+    const verifyData = await verifyRes.json()
+
+    if (verifyData.status == 401) {
+        return {
+            redirect: {
+                destination: '/401',
+                permanent: false,
+            },
+        }
+    }
+
+    if (verifyData.payload.role != "employer") {
+        return {
+            redirect: {
+                destination: '/401',
+                permanent: false,
+            },
+        }
+    }
+
+    return {
+        props: {
+
+        },
+    }
 }

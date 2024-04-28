@@ -1,20 +1,17 @@
 import { useContext } from "react";
 import Head from "next/head";
 import MainContainer from "@/components/MainComponent";
-import { GlobalPageContext } from "@/context/globalPageContext";
 import EmployeeWrapper from "@/components/EmployeeWrapper";
 import EmployerWrapper from "@/components/EmployerWrapper";
 
-export default function Cabinet() {
-    const {userData} = useContext(GlobalPageContext)
-
+export default function Cabinet({ UserRole }) {
     return (
         <>
             <Head>
                 <title>Личный кабинет</title>
             </Head>
             <MainContainer>
-                {userData.role == "employee" ? <EmployeeWrapper /> : <EmployerWrapper />}
+                {UserRole == "employee" ? <EmployeeWrapper /> : <EmployerWrapper />}
             </MainContainer>
         </>
     );
@@ -41,7 +38,8 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-
+            UserRole: verifyData.payload.role,
+            key: verifyData.payload.role
         },
     }
 }

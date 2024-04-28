@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import VacancyCell from "@/components/Cabinet/VacancyCell";
+import VacancyCell from "@/components/CabinetComponents/VacancyCell";
+import { EmployerCabinetContext } from "@/context/employerCabinetContext";
 
 export default function EmployerWrapper() {
     const [vacancies, setVacancies] = useState([])
 
     useEffect(() => {
         fetch("/api/vacancy/getUserVacancies")
-        .then(response_data => response_data.json())
-        .then(response_data => {
-            setVacancies(response_data.payload)
-        })
+            .then(response_data => response_data.json())
+            .then(response_data => {
+                setVacancies(response_data.payload)
+            })
     }, [])
 
     return (
@@ -29,7 +30,11 @@ export default function EmployerWrapper() {
 
                 {/* Враппер вакансий */}
                 <div className="flex flex-col gap-[16px]">
-                    {vacancies.map(vacancy => <VacancyCell key={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)}
+                    <EmployerCabinetContext.Provider value={{
+                        setVacancies
+                    }}>
+                        {vacancies.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)}
+                    </EmployerCabinetContext.Provider>
                 </div>
             </div>
         </main>

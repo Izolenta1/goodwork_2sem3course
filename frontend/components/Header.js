@@ -66,11 +66,11 @@ export default function Header() {
                 {/* Нижняя часть */}
                 <div className="w-full flex justify-center bg-[#313131]">
                     <div className="w-[1140px] h-[60px] flex justify-center items-center gap-[12px]">
-                        <Link href="/" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF]">Главная</Link>
-                        <Link href="/vacancy" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF]">Вакансии</Link>
+                        <Link href="/" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF] hover:text-[#FF6F0E] select-none transition ease-in-out duration-300">Главная</Link>
+                        <Link href="/vacancy" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF] hover:text-[#FF6F0E] select-none transition ease-in-out duration-300">Вакансии</Link>
                         {isAuth 
-                        ? <Link href="/cabinet" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF]">Личный кабинет</Link>
-                        : <button onClick={() => setActiveModal("Login")} className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF]">Личный кабинет</button>}
+                        ? <Link href="/cabinet" className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF] hover:text-[#FF6F0E] select-none transition ease-in-out duration-300">Личный кабинет</Link>
+                        : <button onClick={() => setActiveModal("Login")} className="text-[18px] leading-[18px] font-[500] font-mulish text-[#FFFFFF] select-none hover:text-[#FF6F0E] transition ease-in-out duration-300">Личный кабинет</button>}
                     </div>
                 </div>
             </header>

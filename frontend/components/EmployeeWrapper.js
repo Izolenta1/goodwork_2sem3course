@@ -2,15 +2,20 @@ import { useState, useRef, useEffect } from "react";
 
 export default function EmployeeWrapper() {
     const [email, setEmail] = useState("")
+    const [description, setDescription] = useState("")
     const descriptionRef = useRef(null)
 
     const [saveInfo, setSaveInfo] = useState("")
     const [isError, setError] = useState(false)
 
+    function handleDescriptonChange(e) {
+        setDescription(e.target.value)
+    }
+
     function sendResumeForm() {
         const form = {
             email: email,
-            description: descriptionRef.current.innerText,
+            description: description,
         }
 
         // Выполнение запроса
@@ -45,10 +50,16 @@ export default function EmployeeWrapper() {
             .then(response_data => {
                 if (response_data.status == 200) {
                     setEmail(response_data.payload.email)
-                    descriptionRef.current.innerHTML = response_data.payload.description
+                    setDescription(response_data.payload.description)
                 }
             })
     }, [])
+
+    useEffect(() => {
+        if (descriptionRef.current) {
+            descriptionRef.current.style.height = descriptionRef.current.scrollHeight + 'px';
+        }
+    }, [description])
 
     return (
         <main className="grow flex flex-col items-center">
@@ -71,7 +82,7 @@ export default function EmployeeWrapper() {
                 {/* Поле для резюме */}
                 <div className="flex flex-col gap-[8px]">
                     <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Текст резюме <span className="text-[#FF5C35]">*</span></span>
-                    <div ref={descriptionRef} className="relative w-full min-h-[600px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" contentEditable></div>
+                    <textarea ref={descriptionRef} value={description} onChange={handleDescriptonChange} className="relative w-full min-h-[600px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 resize-none" placeholder="Текст резюме"></textarea>
                 </div>
 
                 {/* Текст ошибки */}

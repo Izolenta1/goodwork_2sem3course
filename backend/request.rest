@@ -1,7 +1,5 @@
-POST http://localhost:3001/api/resume
-Content-Type: application/json
+GET http://localhost:3001/api/vacancy/getAllCavancies?page=1&salaryFrom=30000&salaryTo=50000&expFrom=0&expTo=6
 
-{
-    "email": "asfadg@yandex.ru",
-    "description": "password"
-}
+###
+
+GET http://localhost:3001/api/vacancy/getAllCavancies

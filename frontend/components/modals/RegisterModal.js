@@ -44,7 +44,7 @@ export default function RegisterModal({ activeModal, setActiveModal }) {
     const modalRef = useRef(null)
     useClickOutside(modalRef, () => {
         if (activeModal == "Register") setTimeout(() => setActiveModal(""), 10)
-    })
+    }, "mousedown")
 
     return (
         // Темный фон
@@ -74,19 +74,19 @@ export default function RegisterModal({ activeModal, setActiveModal }) {
                     {/* Поле логина */}
                     <div className="flex flex-col w-[320px] gap-[8px]">
                         <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Логин <span className="text-[#FF5C35]">*</span></span>
-                        <input value={username} onChange={(e) => setUsername(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш логин"></input>
+                        <input value={username} onChange={(e) => setUsername(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Ваш логин"></input>
                     </div>
 
                     {/* Поле пароля */}
                     <div className="flex flex-col w-[320px] gap-[8px]">
                         <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Пароль <span className="text-[#FF5C35]">*</span></span>
-                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваш пароль"></input>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Ваш пароль"></input>
                     </div>
 
                     {/* Поле повторение пароля */}
                     <div className="flex flex-col w-[320px] gap-[8px]">
                         <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Повторите пароль <span className="text-[#FF5C35]">*</span></span>
-                        <input value={repeated} onChange={(e) => setRepeated(e.target.value)} type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Повторите пароль"></input>
+                        <input value={repeated} onChange={(e) => setRepeated(e.target.value)} type="password" className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Повторите пароль"></input>
                     </div>
 
                     <input onChange={() => setRole("employee")} type="radio" id="employee" className={styles.orangeCheckbox} name="who"></input>
