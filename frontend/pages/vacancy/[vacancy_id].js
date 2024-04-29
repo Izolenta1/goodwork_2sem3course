@@ -1,8 +1,37 @@
+import { useState } from "react";
 import Head from "next/head";
 import MainContainer from "@/components/MainComponent";
 import Heart from "@/svgs/Heart";
 
-export default function Vacancy({ vacancyData }) {
+export default function Vacancy({ vacancyData, isResponseSet }) {
+
+    // Функция добавления/удаления отклика
+    const [isResponse, setResponse] = useState(isResponseSet)
+    function addRemoveResponse() {
+        const form = {
+            vacancy_id: vacancyData.vacancy_id,
+        }
+
+        // Выполнение запроса
+        let url = `/api/response`
+        fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(form)
+        })
+            .then(response_data => response_data.json())
+            .then(response_data => {
+                if (response_data.payload == "Отклик удален") {
+                    setResponse(false)
+                }
+                if (response_data.payload == "Отклик добавлен") {
+                    setResponse(true)
+                }
+            })
+    }
+
     return (
         <>
             <Head>
@@ -28,7 +57,7 @@ export default function Vacancy({ vacancyData }) {
                             </div>
 
                             <div className="flex gap-[12px]">
-                                <button className="h-[50px] w-[150px] flex justify-center items-center bg-[#53BB6A] rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Откликнуться</button>
+                                <button onClick={addRemoveResponse} className={`h-[50px] w-[150px] flex justify-center items-center ${isResponse ? "bg-[#313131]" : "bg-[#53BB6A]"} rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF] transition ease-in-out duration-300`} title={isResponse ? "Удалить отклик" : "Откликнуться"}>Откликнуться</button>
                                 <button className="h-[50px] w-[50px] flex justify-center items-center bg-[#53BB6A] rounded-[4px]"><Heart className="w-[24px] h-[24px] fill-[#FFFFFF]" /></button>
                             </div>
                         </div>
@@ -55,9 +84,27 @@ export async function getServerSideProps(context) {
     const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${context.params.vacancy_id}`)
     const vacancyData = (await vacancyRes.json())["payload"]
 
+    let responseURL = `http://localhost:3001/api/response?vacancy_id=${context.params.vacancy_id}`
+    const responseRes = await fetch(responseURL, {
+        method: "GET",
+        headers: {
+            cookie: context.req.headers.cookie
+        }
+    })
+    const responseData = await responseRes.json()
+
+    let isResponseSet
+    if (responseData.payload) {
+        isResponseSet = true
+    }
+    else {
+        isResponseSet = false
+    }
+
     return {
         props: {
             vacancyData,
+            isResponseSet,
             key: JSON.stringify(context.params.vacancy_id),
         },
     }
