@@ -114,7 +114,9 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
 
                         {/* Враппер вакансий */}
                         <div className="flex flex-col gap-[16px]">
-                            {vacanciestList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)}
+                            {vacanciestList.length > 0 
+                            ? vacanciestList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)
+                            : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] text-[#313131]">Вакансии не найдены</span>}
                         </div>
 
                         {/* Блок с загрузкой. Обсервится для подгрузки контента */}

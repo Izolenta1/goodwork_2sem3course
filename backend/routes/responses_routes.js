@@ -18,8 +18,8 @@ router.get("/api/vacancy/response", authenticate_session, checkRole("employer"),
     getVacancyResponses(req, res)
 })
 
-router.post("/api/response", authenticate_session, (req, res) => {
-    addResponse(req ,res)
+router.post("/api/response", authenticate_session, checkRole("employee"), (req, res) => {
+    addResponse(req, res)
 })
 
 export default router

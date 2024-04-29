@@ -7,7 +7,12 @@ import pool from "./database_controller.js";
  */
 export async function getUserResume(req, res) {
     let user_resume = (await pool.execute(`SELECT * from resumes WHERE user_id = ${pool.escape(req.session_data.user_id)}`))[0][0]
-    return res.status(200).json({status: 200, payload: user_resume})
+    if (user_resume) {
+        return res.status(200).json({status: 200, payload: user_resume})
+    }
+    else {
+        return res.status(200).json({status: 200, payload: {resume_id: "", email: "", description: "", user_id: ""}})
+    }
 }
 
 /**

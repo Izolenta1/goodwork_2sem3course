@@ -76,7 +76,7 @@ export default function EmployeeWrapper() {
                 {/* Поле почты для связи */}
                 <div className="flex flex-col gap-[8px]">
                     <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Почта для связи <span className="text-[#FF5C35]">*</span></span>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50 placeholder:text-[#222231]" placeholder="Ваша почта"></input>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} className="relative w-full h-[30px] rounded-[8px] outline-none pl-[12px] bg-[#dddddd] text-[14px] leading-[14px] font-[500] font-mulish text-[#222231] opacity-50" placeholder="Ваша почта"></input>
                 </div>
 
                 {/* Поле для резюме */}

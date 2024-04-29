@@ -6,6 +6,7 @@ import auth_routes from "./routes/auth_routes.js"
 import resume_routes from "./routes/resume_routes.js";
 import vacancy_router from "./routes/vacancy_routes.js";
 import responses_router from "./routes/responses_routes.js";
+import favourites_routes from "./routes/favourites_routes.js";
 
 /**
  * Переменная, содержащая объект сервера
@@ -27,6 +28,7 @@ app.use(auth_routes)
 app.use(resume_routes)
 app.use(vacancy_router)
 app.use(responses_router)
+app.use(favourites_routes)
 
 /**
  * Номер порта
