@@ -5,6 +5,7 @@ import Heart from "@/svgs/Heart";
 
 export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) {
     const [btnErrorText, setBtnErrorText] = useState("")
+    const [commentErrorText, setCommentErrorText] = useState("")
 
     // Функция добавления/удаления отклика
     const [isResponse, setResponse] = useState(isResponseSet)
@@ -82,6 +83,42 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) 
         }
     }, [comment])
 
+    // Функция отправки отзыва
+    function addFeedback() {
+        setCommentErrorText("")
+        const form = {
+            comment: comment,
+            vacancy_id: vacancyData.vacancy_id,
+        }
+
+        // Выполнение запроса
+        let url = `/api/vacancy/feedback`
+        fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(form)
+        })
+            .then(response_data => response_data.json())
+            .then(response_data => {
+                switch (response_data.status) {
+                    case 200:
+                        console.log("ok")
+                        break
+                    case 401:
+                        setCommentErrorText("Для отзыва необходима авторизация")
+                        break
+                    case 403:
+                        setCommentErrorText("Отзывы доступны только соискателям")
+                        break
+                    default:
+                        setCommentErrorText(response_data.payload)
+                        break
+                }
+            })
+    }
+
     return (
         <>
             <Head>
@@ -140,7 +177,8 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) 
                             <div className="flex flex-col gap-[8px]">
                                 <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Текст отзыва <span className="text-[#FF5C35]">*</span></span>
                                 <textarea ref={commentRef} value={comment} onChange={(e) => setComment(e.target.value)} className="relative w-full min-h-[200px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 resize-none" placeholder="Текст отзыва"></textarea>
-                                <button className="h-[50px] w-[150px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Отправить</button>
+                                {commentErrorText != "" ? <span className={`text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]`}>{commentErrorText}</span> : null}
+                                <button onClick={addFeedback} className="h-[50px] w-[150px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Отправить</button>
                             </div>
                         </div>
                     </div>

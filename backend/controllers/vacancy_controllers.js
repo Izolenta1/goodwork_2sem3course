@@ -6,7 +6,7 @@ export async function getVacancyById(req, res) {
     return res.status(200).json({ status: 200, payload: vacancy })
 }
 
-export async function getAllCavancies(req, res) {
+export async function getAllVacancies(req, res) {
     // Проверка на наличие пагинации
     if (!req.query.page) {
         req.query.page = "1"
