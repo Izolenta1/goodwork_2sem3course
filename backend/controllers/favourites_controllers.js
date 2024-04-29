@@ -5,8 +5,13 @@ export async function getFavouriteByID(req, res) {
     return res.status(200).json({ status: 200, payload: checkFavouriteRes })
 }
 
-export function getUserFavourites(req, res) {
-
+export async function getUserFavourites(req, res) {
+    let favouritesList = (await pool.execute(`SELECT t1.*, t2.*
+                                            FROM favourites t1
+                                            LEFT JOIN vacancy t2
+                                            ON t1.vacancy_id = t2.vacancy_id
+                                            WHERE t1.user_id = ${req.session_data.user_id}`))[0]
+    return res.status(200).json({ status: 200, payload: favouritesList })
 }
 
 export async function addFavourite(req, res) {

@@ -2,4 +2,4 @@ GET http://localhost:3001/api/vacancy/getAllCavancies?page=1&salaryFrom=30000&sa
 
 ###
 
-GET http://localhost:3001/api/vacancy/getAllCavancies
+GET http://localhost:3001/api/vacancy/getAllCavancies?search=python

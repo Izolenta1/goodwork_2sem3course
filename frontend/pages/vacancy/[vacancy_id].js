@@ -2,10 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import MainContainer from "@/components/MainComponent";
 import Heart from "@/svgs/Heart";
+import CommentCell from "@/components/CertainVacancyComponents/CommentCell";
 
-export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) {
+export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet, CommentList }) {
     const [btnErrorText, setBtnErrorText] = useState("")
     const [commentErrorText, setCommentErrorText] = useState("")
+
+    const [commentList, setCommentList] = useState(CommentList)
 
     // Функция добавления/удаления отклика
     const [isResponse, setResponse] = useState(isResponseSet)
@@ -104,7 +107,8 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) 
             .then(response_data => {
                 switch (response_data.status) {
                     case 200:
-                        console.log("ok")
+                        setComment("")
+                        setCommentList(prev => [...prev, response_data.payload])
                         break
                     case 401:
                         setCommentErrorText("Для отзыва необходима авторизация")
@@ -180,6 +184,15 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet }) 
                                 {commentErrorText != "" ? <span className={`text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]`}>{commentErrorText}</span> : null}
                                 <button onClick={addFeedback} className="h-[50px] w-[150px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Отправить</button>
                             </div>
+
+                            <div className="w-full h-[2px] bg-[#E0E0E0]"></div>
+
+                            {/* Враппер комментариев */}
+                            <div className="flex flex-col gap-[12px]">
+                                {commentList.length > 0
+                                    ? commentList.reverse().map(comment => <CommentCell key={comment.feedback_id} username={comment.username} comment={comment.comment} />)
+                                    : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отзывы отсутствуют</span>}
+                            </div>
                         </div>
                     </div>
                 </main>
@@ -232,11 +245,15 @@ export async function getServerSideProps(context) {
         isfavouriteSet = false
     }
 
+    const CommentRes = await fetch(`http://localhost:3001/api/vacancy/feedback?vacancy_id=${context.params.vacancy_id}`)
+    const CommentList = (await CommentRes.json())["payload"]
+
     return {
         props: {
             vacancyData,
             isResponseSet,
             isfavouriteSet,
+            CommentList,
             key: JSON.stringify(context.params.vacancy_id),
         },
     }

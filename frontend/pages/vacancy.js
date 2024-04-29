@@ -9,7 +9,7 @@ import LoadingScreen from "@/components/GeneralComponents/LoadingScreen"
 import { useRouter } from "next/navigation"
 
 export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) {
-    const [vacanciestList, setVacanciesList] = useState(VacanciesList)
+    const [vacanciesList, setVacanciesList] = useState(VacanciesList)
     const [vacanciesNext, setVacanciesNext] = useState(VacanciesNext)
 
     const loadingLastElement = useRef(null)
@@ -53,6 +53,7 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
 
     // Функция применения фильтра
     const router = useRouter();
+    const [search, setSearch] = useState(FilterParams["search"])
     function applyFilter() {
         let min_salary = document.getElementById("min_salary")
         let max_salary = document.getElementById("max_salary")
@@ -73,6 +74,9 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
         if (max_exp.value) {
             new_url.searchParams.append('max_exp', max_exp.value)
         }
+        if (search) {
+            new_url.searchParams.append('search', search)
+        }
 
         router.push(`${new_url.pathname}${new_url.search}`)
     }
@@ -91,6 +95,9 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
                             <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Вакансии</span>
+                            {search != null
+                                ? <span className="text-[32px] leading-[32px] max920px:text-[14px] max920px:leading-[14px] font-[500] font-mulish text-[#313131]">«{search}»</span>
+                                : null}
                             <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
                         </div>
 
@@ -114,9 +121,9 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
 
                         {/* Враппер вакансий */}
                         <div className="flex flex-col gap-[16px]">
-                            {vacanciestList.length > 0 
-                            ? vacanciestList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)
-                            : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] text-[#313131]">Вакансии не найдены</span>}
+                            {vacanciesList.length > 0
+                                ? vacanciesList.map(vacancy => <VacancyCell key={vacancy.vacancy_id} vacancy_id={vacancy.vacancy_id} title={vacancy.title} salary={vacancy.salary} exp={vacancy.experience} description={vacancy.description} />)
+                                : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] text-[#313131]">Вакансии не найдены</span>}
                         </div>
 
                         {/* Блок с загрузкой. Обсервится для подгрузки контента */}
@@ -148,6 +155,10 @@ export async function getServerSideProps(context) {
     if (context.query.max_exp) {
         new_url.searchParams.append('max_exp', context.query.max_exp)
         FilterParams["max_exp"] = context.query.max_exp
+    }
+    if (context.query.search) {
+        new_url.searchParams.append('search', context.query.search)
+        FilterParams["search"] = context.query.search
     }
 
     const vacanciesRes = await fetch(new_url.href)

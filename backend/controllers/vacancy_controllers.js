@@ -20,7 +20,7 @@ export async function getAllVacancies(req, res) {
 
     // Проверка на корректные поисковые запросы
     for (let key in req.query) {
-        if (key != "page" && key != "min_salary" && key != "max_salary" && key != "min_exp" && key != "max_exp") {
+        if (key != "page" && key != "min_salary" && key != "max_salary" && key != "min_exp" && key != "max_exp" && key != "search") {
             return res.status(200).json({ status: 404, payload: "Не найдено" })
         }
     }
@@ -48,7 +48,6 @@ export async function getAllVacancies(req, res) {
 
     // Получение вакансий конкретной страницы
     const foundVacancies = (await pool.execute(`SELECT * FROM vacancy ${queryToSQL({...req.query})} LIMIT ${(parseInt(req.query.page) - 1) * vacanciesPerPage}, ${vacanciesPerPage}`))[0]
-
     return res.status(200).json({ status: 200, payload: {next : nextLink, result: foundVacancies} })
 }
 
@@ -209,5 +208,8 @@ function paramToSQL(param, value) {
         case "max_exp":
             return `experience <= ${pool.escape(value)}`
             break;
+        case "search":
+            return `title LIKE ${pool.escape(`%${value}%`)}`
+            break
     }
 }
