@@ -13,19 +13,19 @@ export default function Responses({ VacancyData, ResumesList }) {
                 <main className="grow flex flex-col items-center">
 
                     {/* Враппер под 1140px для новой вакансии */}
-                    <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
+                    <div className="w-[1140px] max1200px:w-[95%] h-fit flex flex-col gap-[32px] max750px:gap-[16px]">
 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
-                            <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Отклики вакансии «{VacancyData.title}»</span>
-                            <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                            <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Отклики вакансии «{VacancyData.title}»</span>
+                            <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                         </div>
 
                         {/* Враппер откликов */}
-                        <div className="flex flex-col gap-[16px]">
+                        <div className="flex flex-col gap-[16px] max750px:gap-[10px]">
                             {ResumesList.length > 0
                                 ? ResumesList.map(resume => <ResponseCell key={resume.response_id} email={resume.email} description={resume.description} />)
-                                : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отклики отсутствуют</span>}
+                                : <span className="text-[24px] leading-[24px] max750px:text-[18px] max750px:leading-[18px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отклики отсутствуют</span>}
                         </div>
                     </div>
                 </main>

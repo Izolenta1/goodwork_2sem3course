@@ -135,66 +135,68 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet, Co
                 <main className="grow flex flex-col items-center">
 
                     {/* Враппер под 1140px для новой вакансии */}
-                    <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
+                    <div className="w-[1140px] max1200px:w-[95%] h-fit flex flex-col gap-[32px] max750px:gap-[16px]">
 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
-                            <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>{vacancyData.title}</span>
-                            <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                            <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>{vacancyData.title}</span>
+                            <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                         </div>
 
                         {/* Краткие характеристики и кнопки */}
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[20px] max750px:gap-[12px]">
                             <div className="flex flex-col gap-[4px]">
-                                <span className='text-[24px] leading-[24px] font-mulish font-[600] text-[#313131]'>Зарплата: <span className="font-[900]">{vacancyData.salary} рублей</span></span>
-                                <span className='text-[24px] leading-[24px] font-mulish font-[600] text-[#313131]'>Необходимо лет опыта: <span className="font-[900]">{vacancyData.experience == 0 ? "Без опыта" : vacancyData.experience}</span></span>
+                                <span className='text-[24px] leading-[24px] max750px:text-[16px] max750px:leading-[16px] font-mulish font-[600] text-[#313131]'>Зарплата: <span className="font-[900]">{vacancyData.salary} рублей</span></span>
+                                <span className='text-[24px] leading-[24px] max750px:text-[16px] max750px:leading-[16px] font-mulish font-[600] text-[#313131]'>Необходимо лет опыта: <span className="font-[900]">{vacancyData.experience == 0 ? "Без опыта" : vacancyData.experience}</span></span>
                             </div>
 
-                            <div className="flex flex-col gap-[12px]">
-                                <div className="flex gap-[12px]">
-                                    <button onClick={addRemoveResponse} className={`h-[50px] w-[150px] flex justify-center items-center ${isResponse ? "bg-[#313131]" : "bg-[#53BB6A]"} rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF] transition ease-in-out duration-300`} title={isResponse ? "Удалить отклик" : "Откликнуться"}>Откликнуться</button>
-                                    <button onClick={addRemoveFavourite} className={`h-[50px] w-[50px] flex justify-center items-center ${isFavourite ? "bg-[#313131]" : "bg-[#53BB6A]"} rounded-[4px] transition ease-in-out duration-300`} title={isFavourite ? "Удалить из избранного" : "Добавить в избранное"}><Heart className="w-[24px] h-[24px] fill-[#FFFFFF]" /></button>
+                            <div className="flex flex-col gap-[12px] max750px:gap-[8px]">
+                                <div className="flex gap-[12px] max750px:gap-[8px]">
+                                    <button onClick={addRemoveResponse} className={`h-[50px] w-[150px] max750px:w-[120px] max750px:h-[40px] flex justify-center items-center ${isResponse ? "bg-[#313131]" : "bg-[#53BB6A]"} rounded-[4px] text-[16px] leading-[16px] max750px:text-[12px] max750px:leading-[12px] font-mulish font-[600] text-[#FFFFFF] transition ease-in-out duration-300`} title={isResponse ? "Удалить отклик" : "Откликнуться"}>Откликнуться</button>
+                                    <button onClick={addRemoveFavourite} className={`h-[50px] w-[50px] max750px:w-[40px] max750px:h-[40px] flex justify-center items-center ${isFavourite ? "bg-[#313131]" : "bg-[#53BB6A]"} rounded-[4px] transition ease-in-out duration-300`} title={isFavourite ? "Удалить из избранного" : "Добавить в избранное"}><Heart className="w-[24px] h-[24px] max750px:w-[16px] max750px:h-[16px] fill-[#FFFFFF]" /></button>
                                 </div>
-                                <span className={`text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]`}>{btnErrorText}</span>
+                                {btnErrorText != ""
+                                    ? <span className={`text-[16px] leading-[16px] max750px:text-[14px] max750px:leading-[14px] font-[500] font-mulish text-[#FF5C35]`}>{btnErrorText}</span>
+                                    : null}
                             </div>
                         </div>
 
                         {/* Описание вакансии */}
-                        <div className="flex flex-col gap-[32px]">
+                        <div className="flex flex-col gap-[32px] max750px:gap-[16px]">
 
                             {/* Заголовок */}
                             <div className='flex flex-col mt-[16px] gap-[8px]'>
-                                <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Описание</span>
-                                <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                                <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Описание</span>
+                                <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                             </div>
 
-                            <span className="text-[24px] leading-[32px] font-mulish font-[400] text-[#000000] whitespace-pre-wrap">{vacancyData.description}</span>
+                            <span className="text-[24px] leading-[32px] max750px:text-[16px] max750px:leading-[20px] font-mulish font-[400] text-[#000000] whitespace-pre-wrap">{vacancyData.description}</span>
                         </div>
 
                         {/* Отзывы о вакансии */}
-                        <div className="flex flex-col gap-[32px]">
+                        <div className="flex flex-col gap-[32px] max750px:gap-[16px]">
 
                             {/* Заголовок */}
                             <div className='flex flex-col mt-[16px] gap-[8px]'>
-                                <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Отзывы о вакансии</span>
-                                <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                                <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Отзывы о вакансии</span>
+                                <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                             </div>
 
                             {/* Поле комментария */}
                             <div className="flex flex-col gap-[8px]">
-                                <span className="text-[20px] leading-[20px] font-[500] font-mulish text-[#000000]">Текст отзыва <span className="text-[#FF5C35]">*</span></span>
+                                <span className="text-[20px] leading-[20px] max750px:text-[16px] max750px:leading-[16px] font-[500] font-mulish text-[#000000]">Текст отзыва <span className="text-[#FF5C35]">*</span></span>
                                 <textarea ref={commentRef} value={comment} onChange={(e) => setComment(e.target.value)} className="relative w-full min-h-[200px] rounded-[8px] outline-none p-[12px] bg-[#dddddd] text-[14px] leading-[18px] font-[500] font-mulish text-[#222231] opacity-50 resize-none" placeholder="Текст отзыва"></textarea>
-                                {commentErrorText != "" ? <span className={`text-[16px] leading-[16px] font-[500] font-mulish text-[#FF5C35]`}>{commentErrorText}</span> : null}
-                                <button onClick={addFeedback} className="h-[50px] w-[150px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px] text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Отправить</button>
+                                {commentErrorText != "" ? <span className={`text-[16px] leading-[16px] max750px:text-[14px] max750px:leading-[14px] font-[500] font-mulish text-[#FF5C35]`}>{commentErrorText}</span> : null}
+                                <button onClick={addFeedback} className="h-[50px] w-[150px] max750px:w-[135px] max750px:h-[32px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px] text-[16px] leading-[16px] max750px:text-[12px] max750px:leading-[12px] font-mulish font-[600] text-[#FFFFFF]">Отправить</button>
                             </div>
 
                             <div className="w-full h-[2px] bg-[#E0E0E0]"></div>
 
                             {/* Враппер комментариев */}
-                            <div className="flex flex-col gap-[12px]">
+                            <div className="flex flex-col gap-[12px] max750px:gap-[10px]">
                                 {commentList.length > 0
                                     ? commentList.reverse().map(comment => <CommentCell key={comment.feedback_id} username={comment.username} comment={comment.comment} />)
-                                    : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отзывы отсутствуют</span>}
+                                    : <span className="text-[24px] leading-[24px] max750px:text-[18px] max750px:leading-[18px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отзывы отсутствуют</span>}
                             </div>
                         </div>
                     </div>

@@ -55,27 +55,27 @@ export default function Dropdowns({ FilterParams }) {
     }, [FilterParams])
 
     return (
-        <div className="relative flex flex-row gap-[12px]">
+        <div className="relative flex flex-row gap-[12px] max750px:gap-[6px]">
 
             {/* Кнопка Дропдаун зарплаты */}
-            <button onClick={() => setSalaryDD(!isSalaryDD)} className="relative w-[150px] h-[40px] max920px:h-[32px] max920px:w-[100px] flex flex-row gap-[10px] justify-between items-center px-[8px] border-[2px] border-[#F3F3F3] rounded-[4px]">
-                <span className="text-[18px] leading-[18px] max920px:text-[14px] max920px:leading-[14px] font-mulish font-[600] text-[#404040]">Зарплата</span>
-                <Arrow svg_className={`${isSalaryDD ? "rotate-[-90deg]" : "rotate-90"} w-[20px] h-[20px] max920px:w-[14px] max920px:h-[14px] transition ease-in-out duration-300`} path_className="fill-[#000000]" />
+            <button onClick={() => setSalaryDD(!isSalaryDD)} className="relative w-[150px] h-[40px] max750px:h-[32px] max750px:w-[110px] flex flex-row gap-[10px] justify-between items-center px-[8px] border-[2px] border-[#F3F3F3] rounded-[4px]">
+                <span className="text-[18px] leading-[18px] max750px:text-[14px] max750px:leading-[14px] font-mulish font-[600] text-[#404040]">Зарплата</span>
+                <Arrow svg_className={`${isSalaryDD ? "rotate-[-90deg]" : "rotate-90"} w-[20px] h-[20px] max750px:w-[14px] max750px:h-[14px] transition ease-in-out duration-300`} path_className="fill-[#000000]" />
             </button>
 
             {/* Кнопка Дропдаун опыта */}
-            <button onClick={() => setExpDD(!isExpDD)} className="relative w-[150px] h-[40px] max920px:h-[32px] max920px:w-[100px] flex flex-row gap-[10px] justify-between items-center px-[8px] border-[2px] border-[#F3F3F3] rounded-[4px]">
-                <span className="text-[18px] leading-[18px] max920px:text-[14px] max920px:leading-[14px] font-mulish font-[600] text-[#404040]">Опыт</span>
-                <Arrow svg_className={`${isExpDD ? "rotate-[-90deg]" : "rotate-90"} w-[20px] h-[20px] max920px:w-[14px] max920px:h-[14px] transition ease-in-out duration-300`} path_className="fill-[#000000]" />
+            <button onClick={() => setExpDD(!isExpDD)} className="relative w-[150px] h-[40px] max750px:h-[32px] max750px:w-[80px] flex flex-row gap-[10px] justify-between items-center px-[8px] border-[2px] border-[#F3F3F3] rounded-[4px]">
+                <span className="text-[18px] leading-[18px] max750px:text-[14px] max750px:leading-[14px] font-mulish font-[600] text-[#404040]">Опыт</span>
+                <Arrow svg_className={`${isExpDD ? "rotate-[-90deg]" : "rotate-90"} w-[20px] h-[20px] max750px:w-[14px] max750px:h-[14px] transition ease-in-out duration-300`} path_className="fill-[#000000]" />
             </button>
 
             {/* Поле дропдауна зарплаты */}
-            <div ref={salaryDDRef} className={`absolute flex flex-col gap-[20px] w-full z-[2] h-fit p-[12px] mt-[50px] max920px:mt-[42px] bg-[#FFFFFF] border-[2px] border-[#F3F3F3] rounded-[4px] ${isSalaryDD ? styles.active : styles.disabled}`}>
+            <div ref={salaryDDRef} className={`absolute flex flex-col gap-[20px] max750px:gap-[12px] w-full z-[2] h-fit p-[12px] mt-[50px] max750px:mt-[42px] bg-[#FFFFFF] border-[2px] border-[#F3F3F3] rounded-[4px] ${isSalaryDD ? styles.active : styles.disabled}`}>
 
                 {/* Заголовок */}
                 <div className='flex flex-col gap-[8px]'>
-                    <span className='text-[24px] leading-[24px] max920px:text-[18px] max920px:leading-[18px] font-mulish font-[900] text-[#313131]'>Зарплата</span>
-                    <div className='w-[50px] h-[4px] max920px:h-[2px] bg-[#FF6F0E]'></div>
+                    <span className='text-[24px] leading-[24px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Зарплата</span>
+                    <div className='w-[50px] h-[4px] max750px:h-[2px] bg-[#FF6F0E]'></div>
                 </div>
 
                 {/* Инпуты зарплаты */}
@@ -93,12 +93,12 @@ export default function Dropdowns({ FilterParams }) {
             </div>
 
             {/* Поле дропдауна опыта */}
-            <div ref={expDDRef} className={`flex flex-col gap-[20px] absolute w-full z-[2] p-[12px] mt-[50px] max920px:mt-[42px] bg-[#FFFFFF] border-[2px] border-[#F3F3F3] rounded-[4px] ${isExpDD ? styles.active : styles.disabled}`}>
+            <div ref={expDDRef} className={`flex flex-col gap-[20px] max750px:gap-[12px] absolute w-full z-[2] p-[12px] mt-[50px] max750px:mt-[42px] bg-[#FFFFFF] border-[2px] border-[#F3F3F3] rounded-[4px] ${isExpDD ? styles.active : styles.disabled}`}>
 
                 {/* Заголовок */}
                 <div className='flex flex-col gap-[8px]'>
-                    <span className='text-[24px] leading-[24px] max920px:text-[18px] max920px:leading-[18px] font-mulish font-[900] text-[#313131]'>Опыт работы</span>
-                    <div className='w-[50px] h-[4px] max920px:h-[2px] bg-[#FF6F0E]'></div>
+                    <span className='text-[24px] leading-[24px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Опыт работы</span>
+                    <div className='w-[50px] h-[4px] max750px:h-[2px] bg-[#FF6F0E]'></div>
                 </div>
 
                 {/* Инпуты опыта */}

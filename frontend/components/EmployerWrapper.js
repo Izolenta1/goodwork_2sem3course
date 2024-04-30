@@ -18,18 +18,18 @@ export default function EmployerWrapper() {
         <main className="grow flex flex-col items-center">
 
             {/* Враппер под 1140px для страницы работодателя */}
-            <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
+            <div className="w-[1140px] max1200px:w-[95%] h-fit flex flex-col gap-[32px] max750px:gap-[16px]">
 
                 {/* Заголовок */}
                 <div className='flex flex-col mt-[16px] gap-[8px]'>
-                    <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Ваши вакансии</span>
-                    <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                    <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Ваши вакансии</span>
+                    <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                 </div>
 
-                <Link href="/cabinet/vacancy/new" className="flex justify-center items-center bg-[#FF6F0E] rounded-[6px] w-[200px] h-[50px] text-[16px] leading-[16px] font-[700] font-mulish text-[#FFFFFF]">Создать вакансию</Link>
+                <Link href="/cabinet/vacancy/new" className="flex justify-center items-center bg-[#FF6F0E] rounded-[6px] w-[200px] h-[50px] max750px:w-[135px] max750px:h-[32px] text-[16px] leading-[16px] max750px:text-[12px] max750px:leading-[12px] font-[700] font-mulish text-[#FFFFFF]">Создать вакансию</Link>
 
                 {/* Враппер вакансий */}
-                <div className="flex flex-col gap-[16px]">
+                <div className="flex flex-col gap-[16px] max750px:gap-[10px]">
                     <EmployerCabinetContext.Provider value={{
                         setVacancies
                     }}>

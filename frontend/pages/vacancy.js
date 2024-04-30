@@ -90,31 +90,31 @@ export default function Vacancy({ VacanciesList, VacanciesNext, FilterParams }) 
                 <main className="grow flex flex-col items-center">
 
                     {/* Враппер под 1140px для новой вакансии */}
-                    <div className="w-[1140px] h-fit flex flex-col gap-[32px]">
+                    <div className="w-[1140px] max1200px:w-[95%] h-fit flex flex-col gap-[32px] max750px:gap-[16px]">
 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
-                            <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Вакансии</span>
+                            <span className='text-[40px] leading-[40px] max750px:text-[18px] max750px:leading-[18px] font-mulish font-[900] text-[#313131]'>Вакансии</span>
                             {search != null
-                                ? <span className="text-[32px] leading-[32px] max920px:text-[14px] max920px:leading-[14px] font-[500] font-mulish text-[#313131]">«{search}»</span>
+                                ? <span className="text-[32px] leading-[32px] max750px:text-[14px] max750px:leading-[14px] font-[500] font-mulish text-[#313131]">«{search}»</span>
                                 : null}
-                            <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
+                            <div className='w-[140px] h-[6px] max750px:h-[3px] bg-[#FF6F0E]'></div>
                         </div>
 
                         {/* Настройки фильтра */}
-                        <div className="flex flex-row gap-[12px]">
+                        <div className="flex flex-row gap-[12px] max750px:gap-[6px]">
 
                             {/* Кнопка очистки фильтра */}
-                            <Link href={`/vacancy`} title="Очистить фильтр" className="h-[40px] w-[40px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px]">
-                                <span className="text-[16px] leading-[16px] font-[700] text-[#FFFFFF]">X</span>
+                            <Link href={`/vacancy`} title="Очистить фильтр" className="h-[40px] w-[40px] max750px:h-[32px] max750px:w-[32px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px]">
+                                <span className="text-[16px] leading-[16px] max750px:text-[14px] max750px:leading-[14px] font-[700] max580px:font-[400] text-[#FFFFFF]">X</span>
                             </Link>
 
                             {/* Дропдауны */}
                             <Dropdowns FilterParams={FilterParams} />
 
                             {/* Кнопка применения фильтра */}
-                            <button onClick={applyFilter} className="h-[40px] w-[100px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px]" title="Применить">
-                                <span className="max580px:hidden text-[16px] leading-[16px] font-mulish font-[600] text-[#FFFFFF]">Применить</span>
+                            <button onClick={applyFilter} className="h-[40px] w-[100px] max750px:h-[32px] max750px:w-[80px] max580px:w-[32px] flex justify-center items-center bg-[#FF6F0E] rounded-[4px]" title="Применить">
+                                <span className="max580px:hidden text-[16px] leading-[16px] max750px:text-[12px] max750px:leading-[12px] font-mulish font-[600] text-[#FFFFFF]">Применить</span>
                                 <Check className="hidden max580px:block w-[14px] h-[14px] fill-[#FFFFFF]" />
                             </button>
                         </div>
