@@ -1,11 +1,13 @@
 import Head from "next/head";
 import MainContainer from "@/components/MainComponent";
+import ResponseCell from "@/components/ResponsesComponents/ResponseCell";
 
-export default function Favourite({ ResumesList }) {
+export default function Responses({ VacancyData, ResumesList }) {
+    let title = `Отклики вакансии «${VacancyData.title}»`
     return (
         <>
             <Head>
-                <title>Отклики вакансии </title>
+                <title>{title}</title>
             </Head>
             <MainContainer>
                 <main className="grow flex flex-col items-center">
@@ -15,13 +17,15 @@ export default function Favourite({ ResumesList }) {
 
                         {/* Заголовок */}
                         <div className='flex flex-col mt-[16px] gap-[8px]'>
-                            <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Отклики вакансии </span>
+                            <span className='text-[40px] leading-[40px] font-mulish font-[900] text-[#313131]'>Отклики вакансии «{VacancyData.title}»</span>
                             <div className='w-[140px] h-[6px] bg-[#FF6F0E]'></div>
                         </div>
 
                         {/* Враппер откликов */}
                         <div className="flex flex-col gap-[16px]">
-                            
+                            {ResumesList.length > 0
+                                ? ResumesList.map(resume => <ResponseCell key={resume.response_id} email={resume.email} description={resume.description} />)
+                                : <span className="text-[24px] leading-[24px] self-center font-mulish font-[900] mb-[12px] text-[#313131]">Отклики отсутствуют</span>}
                         </div>
                     </div>
                 </main>
@@ -58,7 +62,10 @@ export async function getServerSideProps(context) {
         }
     }
 
-    const resumesRes = await fetch("http://localhost:3001/api/vacancy/response", {
+    const vacancyRes = await fetch(`http://localhost:3001/api/vacancy/getVacancyById?vacancy_id=${context.params.vacancy_id}`)
+    const vacancyData = await vacancyRes.json()
+
+    const resumesRes = await fetch(`http://localhost:3001/api/vacancy/response?vacancy_id=${context.params.vacancy_id}`, {
         method: "GET",
         headers: {
             cookie: context.req.headers.cookie
@@ -68,6 +75,7 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
+            VacancyData: vacancyData.payload,
             ResumesList: resumesData.payload,
         },
     }

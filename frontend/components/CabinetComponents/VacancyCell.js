@@ -36,9 +36,9 @@ export default function VacancyCell({ vacancy_id, title, salary, exp, descriptio
             </div>
 
             <div className="flex gap-[12px]">
-                <button className="flex justify-center items-center w-[50px] h-[50px] bg-[#53BB6A] rounded-[6px]" title="Посмотреть отклики">
+                <Link href={`/cabinet/vacancy/responses/${vacancy_id}`} className="flex justify-center items-center w-[50px] h-[50px] bg-[#53BB6A] rounded-[6px]" title="Посмотреть отклики">
                     <Eye className="w-[24px] h-[24px] fill-[#FFFFFF]" />
-                </button>
+                </Link>
                 <Link href={`/cabinet/vacancy/edit/${vacancy_id}`} className="flex justify-center items-center w-[50px] h-[50px] bg-[#FF6F0E] rounded-[6px]" title="Редактировать">
                     <Edit className="w-[24px] h-[24px] fill-[#FFFFFF]" />
                 </Link>

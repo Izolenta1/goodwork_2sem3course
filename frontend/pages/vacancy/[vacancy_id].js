@@ -35,6 +35,9 @@ export default function Vacancy({ vacancyData, isResponseSet, isfavouriteSet, Co
                 if (response_data.payload == "Отклик добавлен") {
                     setResponse(true)
                 }
+                if (response_data.payload == "Нет резюме") {
+                    setBtnErrorText("Для отклика необходимо резюме")
+                }
                 if (response_data.status == 401) {
                     setBtnErrorText("Для отклика необходима авторизация")
                 }
