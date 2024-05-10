@@ -157,7 +157,7 @@ function regCheckUsername(username) {
  */
 function regCheckPassword(password) {
     if (!(password.length > 6)) {
-        return "Длина пароля должна быть больше 6 символов"
+        return "Длина пароля должна быть не менее 7 символов"
     }
     if (password.length > 64) {
         return "Длина пароля не должна быть больше 64 символов"
